@@ -18,6 +18,7 @@ import Products from './pages/Products.jsx'
 import Services from './pages/Services.jsx'
 import StudentPortal from './pages/StudentPortal.jsx'
 import NotFound from './pages/NotFound.jsx'
+import Australia from './pages/Australia'
 
 function ScrollToTop() {
   const { pathname } = useLocation()
@@ -48,6 +49,7 @@ export default function App() {
             <Route path="/products" element={<Products />} />
             <Route path="/services" element={<Services />} />
             <Route path="/student-portal" element={<StudentPortal />} />
+            <Route path="/australia" element={<Australia />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
         </main>

@@ -96,6 +96,12 @@ export default function Navbar() {
             >
               Book Free Demo
             </Link>
+            <Link
+              to="/australia"
+              className="hidden md:inline-flex items-center rounded-full bg-nova text-[#1B2130] text-sm font-semibold px-5 py-2.5 hover:brightness-105 transition-all shadow-[0_0_0_0_rgba(232,163,61,0)] hover:shadow-[0_0_24px_-4px_rgba(232,163,61,0.6)]"
+            >
+              Australia
+            </Link>
             <button
               className="lg:hidden w-9 h-9 grid place-items-center rounded-full border border-border/15"
               onClick={() => setOpen((o) => !o)}
@@ -126,6 +132,13 @@ export default function Navbar() {
               className="mt-2 text-center rounded-full bg-nova text-[#1B2130] text-sm font-semibold px-5 py-2.5"
             >
               Book Free Demo
+            </Link>
+            <Link
+              to="/australia"
+              onClick={() => setOpen(false)}
+              className="mt-2 text-center rounded-full bg-nova text-[#1B2130] text-sm font-semibold px-5 py-2.5"
+            >
+              Australia
             </Link>
           </div>
         </div>
