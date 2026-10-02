@@ -1,6 +1,7 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
 import { ArrowUpRight, Star } from 'lucide-react'
+import { useCurrency, coursePrice } from '../lib/CurrencyContext.jsx'
 
 export default function CourseCard({ course }) {
   return (

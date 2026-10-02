@@ -19,6 +19,9 @@ import Services from './pages/Services.jsx'
 import StudentPortal from './pages/StudentPortal.jsx'
 import NotFound from './pages/NotFound.jsx'
 import Australia from './pages/Australia'
+import { CurrencyProvider } from './lib/CurrencyContext.jsx'
+import { AuthProvider } from './lib/AuthContext.jsx'
+import Dashboard from './pages/Dashboard.jsx'
 
 function ScrollToTop() {
   const { pathname } = useLocation()
@@ -31,31 +34,36 @@ function ScrollToTop() {
 export default function App() {
   return (
     <ThemeProvider>
-      <ScrollToTop />
-      <div className="min-h-screen flex flex-col">
-        <Navbar />
-        <main className="flex-1">
-          <Routes>
-            <Route path="/" element={<Home />} />
-            <Route path="/about" element={<About />} />
-            <Route path="/courses" element={<Courses />} />
-            <Route path="/courses/:slug" element={<CourseDetail />} />
-            <Route path="/faculty" element={<Faculty />} />
-            <Route path="/success-stories" element={<SuccessStories />} />
-            <Route path="/blog" element={<Blog />} />
-            <Route path="/events" element={<Events />} />
-            <Route path="/careers" element={<Careers />} />
-            <Route path="/contact" element={<Contact />} />
-            <Route path="/products" element={<Products />} />
-            <Route path="/services" element={<Services />} />
-            <Route path="/student-portal" element={<StudentPortal />} />
-            <Route path="/australia" element={<Australia />} />
-            <Route path="*" element={<NotFound />} />
-          </Routes>
-        </main>
-        <Footer />
-        <ChatWidget />
-      </div>
+      <CurrencyProvider>
+        <AuthProvider>
+          <ScrollToTop />
+          <div className="min-h-screen flex flex-col">
+            <Navbar />
+            <main className="flex-1">
+              <Routes>
+                <Route path="/" element={<Home />} />
+                <Route path="/about" element={<About />} />
+                <Route path="/courses" element={<Courses />} />
+                <Route path="/courses/:slug" element={<CourseDetail />} />
+                <Route path="/faculty" element={<Faculty />} />
+                <Route path="/success-stories" element={<SuccessStories />} />
+                <Route path="/blog" element={<Blog />} />
+                <Route path="/events" element={<Events />} />
+                <Route path="/careers" element={<Careers />} />
+                <Route path="/contact" element={<Contact />} />
+                <Route path="/products" element={<Products />} />
+                <Route path="/services" element={<Services />} />
+                <Route path="/student-portal" element={<StudentPortal />} />
+                <Route path="/dashboard" element={<Dashboard />} />
+                <Route path="/australia" element={<Australia />} />
+                <Route path="*" element={<NotFound />} />
+              </Routes>
+            </main>
+            <Footer />
+            <ChatWidget />
+          </div>
+        </AuthProvider>
+      </CurrencyProvider>
     </ThemeProvider>
   )
 }

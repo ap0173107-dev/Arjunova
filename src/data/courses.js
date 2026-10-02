@@ -24,7 +24,8 @@ export const courses = [
       'Weekly parent updates on progress, not just marks',
     ],
     faculty: ['Foundation & CBSE Faculty'],
-    price: '$5.5/hr',
+    priceINR: '₹550 / hr',
+    priceUSD: '$5.5 / hr',
   },
   {
     slug: 'iit-jee',

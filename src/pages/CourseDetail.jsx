@@ -1,15 +1,22 @@
-import React from 'react'
-import { useParams, Link, Navigate } from 'react-router-dom'
+import React, { useState } from 'react'
+import { useParams, Navigate } from 'react-router-dom'
 import { CheckCircle2, PlayCircle, Star, ArrowRight } from 'lucide-react'
 import Reveal from '../components/Reveal.jsx'
 import { Eyebrow } from '../components/ui.jsx'
+import Quiz from '../components/Quiz.jsx'
+import EnrollModal from '../components/EnrollModal.jsx'
 import { courses } from '../data/courses.js'
+import { quizzes } from '../data/quizzes.js'
+import { useCurrency, coursePrice } from '../lib/CurrencyContext.jsx'
 
 export default function CourseDetail() {
   const { slug } = useParams()
   const course = courses.find((c) => c.slug === slug)
+  const { currency, toggleCurrency } = useCurrency()
+  const [enrollOpen, setEnrollOpen] = useState(false)
 
   if (!course) return <Navigate to="/courses" replace />
+  const quiz = quizzes[course.slug]
 
   return (
     <div>
@@ -70,15 +77,23 @@ export default function CourseDetail() {
               </button>
             </Reveal>
 
+            {quiz && (
+              <Reveal>
+                <h2 className="font-display font-bold text-2xl mb-2">Try a Practice Question Set</h2>
+                <p className="text-sm text-mist mb-5">A quick 3-question taste of what our classes drill on.</p>
+                <Quiz quiz={quiz} />
+              </Reveal>
+            )}
+
             <Reveal>
               <h2 className="font-display font-bold text-2xl mb-5">Faculty</h2>
               <div className="flex flex-wrap gap-4">
-                {course.faculty.map((name) => (
-                  <div key={name} className="flex items-center gap-3 rounded-2xl border border-border/10 px-4 py-3">
+                {course.faculty.map((role) => (
+                  <div key={role} className="flex items-center gap-3 rounded-2xl border border-border/10 px-4 py-3">
                     <div className="w-9 h-9 rounded-full bg-arjuna/10 grid place-items-center font-display font-bold text-arjuna text-sm">
-                      {name.charAt(0)}
+                      {role.charAt(0)}
                     </div>
-                    <span className="text-sm font-medium">{name}</span>
+                    <span className="text-sm font-medium">{role}</span>
                   </div>
                 ))}
               </div>
@@ -102,18 +117,23 @@ export default function CourseDetail() {
           <Reveal delay={0.1}>
             <div className="glass rounded-3xl p-7 sticky top-24">
               <p className="eyebrow text-arjuna">Course Fee</p>
-              <p className="mt-2 font-display font-extrabold text-3xl">{course.price}</p>
-              <Link
-                to="/contact"
+              <p className="mt-2 font-display font-extrabold text-3xl">{coursePrice(course, currency)}</p>
+              <button onClick={toggleCurrency} className="mt-1 text-xs text-mist underline underline-offset-2">
+                Show in {currency === 'INR' ? 'USD' : 'INR'}
+              </button>
+              <button
+                onClick={() => setEnrollOpen(true)}
                 className="mt-6 w-full inline-flex items-center justify-center gap-2 rounded-full bg-nova text-[#1B2130] font-semibold px-6 py-3.5 hover:brightness-105 transition-all"
               >
                 Enroll Now <ArrowRight className="w-4 h-4" />
-              </Link>
+              </button>
               <p className="mt-4 text-xs text-mist text-center">Free diagnostic session before you commit.</p>
             </div>
           </Reveal>
         </div>
       </section>
+
+      {enrollOpen && <EnrollModal course={course} onClose={() => setEnrollOpen(false)} />}
     </div>
   )
 }

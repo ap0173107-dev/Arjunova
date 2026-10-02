@@ -1,7 +1,9 @@
 import React, { useState } from 'react'
+import { Navigate, useNavigate } from 'react-router-dom'
 import { PageHero } from '../components/ui.jsx'
 import Reveal from '../components/Reveal.jsx'
-import { LayoutDashboard, CalendarCheck, FileText, BookOpen, ClipboardList, Award, Bell, Lock } from 'lucide-react'
+import { LayoutDashboard, CalendarCheck, FileText, BookOpen, ClipboardList, Award, Bell, Lock, AlertTriangle } from 'lucide-react'
+import { useAuth } from '../lib/AuthContext.jsx'
 
 const studentFeatures = [
   { icon: LayoutDashboard, label: 'Dashboard' },
@@ -22,14 +24,42 @@ const parentFeatures = [
 
 export default function StudentPortal() {
   const [tab, setTab] = useState('student')
+  const [mode, setMode] = useState('login') // login | signup
+  const [form, setForm] = useState({ fullName: '', email: '', password: '' })
+  const [error, setError] = useState('')
+  const [loading, setLoading] = useState(false)
+  const { user, signIn, signUp, configured } = useAuth()
+  const navigate = useNavigate()
+
   const features = tab === 'student' ? studentFeatures : parentFeatures
+
+  if (user) return <Navigate to="/dashboard" replace />
+
+  const handleChange = (e) => setForm((f) => ({ ...f, [e.target.name]: e.target.value }))
+
+  const handleSubmit = async (e) => {
+    e.preventDefault()
+    setError('')
+    setLoading(true)
+    const action =
+      mode === 'signup'
+        ? signUp({ email: form.email, password: form.password, fullName: form.fullName, role: tab })
+        : signIn({ email: form.email, password: form.password })
+    const { error: err } = await action
+    setLoading(false)
+    if (err) {
+      setError(err.message)
+      return
+    }
+    navigate('/dashboard')
+  }
 
   return (
     <div>
       <PageHero
         eyebrow="Student & Parent Portal"
         title="Your dashboard for everything Arjunova."
-        description="Attendance, tests, assignments and progress reports, in one login. The portal is in active development — here's what it will include at launch."
+        description="Attendance, tests, assignments and progress reports, in one login. The full feature set below is rolling out gradually — login and a basic dashboard are live now."
       />
 
       <section className="py-16 md:py-20">
@@ -69,16 +99,48 @@ export default function StudentPortal() {
               <span className="w-11 h-11 rounded-2xl bg-arjuna/10 grid place-items-center">
                 <Lock className="w-5 h-5 text-arjuna" />
               </span>
-              <h3 className="mt-5 font-display font-bold text-xl">Login opens with your enrollment.</h3>
-              <p className="mt-3 text-sm text-mist leading-relaxed">
-                Portal credentials are issued automatically when you enroll in any Arjunova
-                course. Already a student? Ask your batch coordinator for your login.
-              </p>
-              <div className="mt-6 space-y-3 opacity-60 pointer-events-none">
-                <input placeholder="Student ID or phone" className="w-full rounded-xl border border-border/15 bg-transparent px-4 py-3 text-sm" />
-                <input placeholder="Password" type="password" className="w-full rounded-xl border border-border/15 bg-transparent px-4 py-3 text-sm" />
-                <button className="w-full rounded-full bg-nova text-[#1B2130] font-semibold px-6 py-3 text-sm">Log in</button>
-              </div>
+              <h3 className="mt-5 font-display font-bold text-xl">
+                {mode === 'login' ? 'Log in to your account.' : `Create a ${tab} account.`}
+              </h3>
+
+              {!configured && (
+                <p className="mt-3 flex items-start gap-2 text-xs text-nova bg-nova/10 rounded-xl p-3">
+                  <AlertTriangle className="w-4 h-4 shrink-0 mt-0.5" />
+                  Backend isn't connected yet, so login is disabled — see SUPABASE_SETUP.md to enable it.
+                </p>
+              )}
+
+              <form onSubmit={handleSubmit} className="mt-6 space-y-3">
+                {mode === 'signup' && (
+                  <input
+                    name="fullName" placeholder="Full name" value={form.fullName} onChange={handleChange} required
+                    className="w-full rounded-xl border border-border/15 bg-transparent px-4 py-3 text-sm outline-none focus:border-nova/50"
+                  />
+                )}
+                <input
+                  name="email" type="email" placeholder="Email" value={form.email} onChange={handleChange} required
+                  className="w-full rounded-xl border border-border/15 bg-transparent px-4 py-3 text-sm outline-none focus:border-nova/50"
+                />
+                <input
+                  name="password" type="password" placeholder="Password" value={form.password} onChange={handleChange} required
+                  className="w-full rounded-xl border border-border/15 bg-transparent px-4 py-3 text-sm outline-none focus:border-nova/50"
+                />
+                {error && <p className="text-xs text-red-500">{error}</p>}
+                <button
+                  type="submit"
+                  disabled={loading || !configured}
+                  className="w-full rounded-full bg-nova text-[#1B2130] font-semibold px-6 py-3 text-sm disabled:opacity-50"
+                >
+                  {loading ? 'Please wait…' : mode === 'login' ? 'Log in' : 'Sign up'}
+                </button>
+              </form>
+
+              <button
+                onClick={() => setMode(mode === 'login' ? 'signup' : 'login')}
+                className="mt-4 text-xs text-mist underline underline-offset-2"
+              >
+                {mode === 'login' ? "New here? Create an account" : 'Already have an account? Log in'}
+              </button>
             </div>
           </Reveal>
         </div>
