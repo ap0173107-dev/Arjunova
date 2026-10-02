@@ -25,7 +25,7 @@ const parentFeatures = [
 export default function StudentPortal() {
   const [tab, setTab] = useState('student')
   const [mode, setMode] = useState('login') // login | signup
-  const [form, setForm] = useState({ fullName: '', email: '', password: '' })
+  const [form, setForm] = useState({ fullName: '', email: '', password: '', childEmail: '' })
   const [error, setError] = useState('')
   const [loading, setLoading] = useState(false)
   const { user, signIn, signUp, configured } = useAuth()
@@ -43,7 +43,13 @@ export default function StudentPortal() {
     setLoading(true)
     const action =
       mode === 'signup'
-        ? signUp({ email: form.email, password: form.password, fullName: form.fullName, role: tab })
+        ? signUp({
+            email: form.email,
+            password: form.password,
+            fullName: form.fullName,
+            role: tab,
+            childEmail: tab === 'parent' ? form.childEmail : undefined,
+          })
         : signIn({ email: form.email, password: form.password })
     const { error: err } = await action
     setLoading(false)
@@ -121,6 +127,13 @@ export default function StudentPortal() {
                   name="email" type="email" placeholder="Email" value={form.email} onChange={handleChange} required
                   className="w-full rounded-xl border border-border/15 bg-transparent px-4 py-3 text-sm outline-none focus:border-nova/50"
                 />
+                {mode === 'signup' && tab === 'parent' && (
+                  <input
+                    name="childEmail" type="email" placeholder="Your child's email (used on their enrollment)"
+                    value={form.childEmail} onChange={handleChange} required
+                    className="w-full rounded-xl border border-border/15 bg-transparent px-4 py-3 text-sm outline-none focus:border-nova/50"
+                  />
+                )}
                 <input
                   name="password" type="password" placeholder="Password" value={form.password} onChange={handleChange} required
                   className="w-full rounded-xl border border-border/15 bg-transparent px-4 py-3 text-sm outline-none focus:border-nova/50"
