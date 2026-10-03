@@ -5,6 +5,7 @@ import Reveal from '../components/Reveal.jsx'
 import { Eyebrow } from '../components/ui.jsx'
 import Quiz from '../components/Quiz.jsx'
 import EnrollModal from '../components/EnrollModal.jsx'
+import Seo from '../components/seo.jsx'
 import { courses } from '../data/courses.js'
 import { quizzes } from '../data/quizzes.js'
 import { useCurrency, coursePrice } from '../lib/CurrencyContext.jsx'
@@ -18,8 +19,31 @@ export default function CourseDetail() {
   if (!course) return <Navigate to="/courses" replace />
   const quiz = quizzes[course.slug]
 
+  const jsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'Course',
+    name: course.name,
+    description: course.overview,
+    provider: {
+      '@type': 'EducationalOrganization',
+      name: 'Arjunova',
+      sameAs: 'https://arjunova.com',
+    },
+    hasCourseInstance: {
+      '@type': 'CourseInstance',
+      courseMode: 'online',
+    },
+  }
+
   return (
     <div>
+      <Seo
+        title={`${course.name} — Online ${course.level}`}
+        description={`${course.tagline} Fully online, taught live. ${course.overview.slice(0, 100)}`}
+        path={`/courses/${course.slug}`}
+        jsonLd={jsonLd}
+      />
+
       <section className="pt-14 pb-16 md:pt-20 md:pb-20 border-b border-border/10">
         <div className="container-page">
           <Reveal>

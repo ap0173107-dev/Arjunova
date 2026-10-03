@@ -4,6 +4,7 @@ import { PageHero } from '../components/ui.jsx'
 import Reveal from '../components/Reveal.jsx'
 import CourseCard from '../components/CourseCard.jsx'
 import { courses, categories } from '../data/courses.js'
+import Seo from '../components/seo.jsx'
 
 export default function Courses() {
   const [active, setActive] = useState('All')
@@ -23,7 +24,13 @@ export default function Courses() {
   }, [active, query])
 
   return (
+    
     <div>
+<Seo
+  title="All Courses — Online Maths, Science & Exam Coaching"
+  description="Browse Arjunova's online courses: CBSE/ICSE tuition, JEE, NEET, Cambridge, IB, coding, and foundation classes — search by class level or subject."
+  path="/courses"
+/>
       <PageHero
         eyebrow="Courses"
         title="Every track we teach, in one place."

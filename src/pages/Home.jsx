@@ -7,6 +7,7 @@ import FloatingVideoCard from '../components/FloatingVideoCard.jsx'
 import { Eyebrow } from '../components/ui.jsx'
 import { courses } from '../data/courses.js'
 import { faculty, testimonials, blogPosts, events } from '../data/content.js'
+import Seo from '../components/seo.jsx'
 
 const pillars = [
   {
@@ -55,6 +56,11 @@ function FaqItem({ item }) {
   const [open, setOpen] = useState(false)
   return (
     <div className="border-b border-border/10 py-5">
+      <Seo
+  title="Online Tutoring — CBSE, ICSE, Cambridge, IB, JEE, NEET"
+  description="Arjunova offers online tuition for Class 1–12, JEE, NEET, Cambridge and IB — live classes with expert faculty, for Indian and international students."
+  path="/"
+/>
       <button
         onClick={() => setOpen((o) => !o)}
         className="w-full flex items-center justify-between text-left gap-4"
