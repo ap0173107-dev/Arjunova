@@ -22,6 +22,7 @@ import Australia from './pages/Australia'
 import { CurrencyProvider } from './lib/CurrencyContext.jsx'
 import { AuthProvider } from './lib/AuthContext.jsx'
 import Dashboard from './pages/Dashboard.jsx'
+import EducationalSolutions from './pages/EducationalSolutions.jsx'
 
 function ScrollToTop() {
   const { pathname } = useLocation()
@@ -53,6 +54,7 @@ export default function App() {
                 <Route path="/contact" element={<Contact />} />
                 <Route path="/products" element={<Products />} />
                 <Route path="/services" element={<Services />} />
+                <Route path="/solutions/educational-institutes" element={<EducationalSolutions />} />
                 <Route path="/student-portal" element={<StudentPortal />} />
                 <Route path="/dashboard" element={<Dashboard />} />
                 <Route path="/australia" element={<Australia />} />
