@@ -6,7 +6,7 @@ import {
 } from 'lucide-react'
 import { PageHero } from '../components/ui.jsx'
 import Reveal from '../components/Reveal.jsx'
-import Seo from '../components/Seo.jsx'
+import seo from '../components/seo.jsx'
 
 const services = [
   { icon: Globe2, title: 'Website Development', body: 'Premium, fast, mobile-first websites built for coaching institutes and schools.' },
@@ -22,7 +22,7 @@ const services = [
 export default function Services() {
   return (
     <div>
-      <Seo
+      <seo
         title="Technology Services for Coaching Institutes & Schools"
         description="Website development, admission systems, student management, digital marketing and WhatsApp automation — built for educational institutes and coaching centers."
         path="/services"

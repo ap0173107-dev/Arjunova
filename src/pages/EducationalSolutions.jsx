@@ -5,7 +5,7 @@ import {
 } from 'lucide-react'
 import { PageHero } from '../components/ui.jsx'
 import Reveal from '../components/Reveal.jsx'
-import Seo from '../components/Seo.jsx'
+import seo from '../components/seo.jsx'
 
 const solutions = [
   {
@@ -105,7 +105,7 @@ export default function EducationalSolutions() {
 
   return (
     <div>
-      <Seo
+      <seo
         title="Website, Admissions & Marketing Solutions for Coaching Institutes"
         description="A complete technology and growth package for educational institutes: website development, online admissions, student management, digital marketing and WhatsApp automation."
         path="/solutions/educational-institutes"
